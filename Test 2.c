@@ -134,6 +134,7 @@ int main()
       char ime[32];
       char pin[4];
       int attempt=3;
+      char digit[1];
       
       usartPutString("Dobar dan, unesite ime i prezime:\r\n");
       
@@ -152,14 +153,41 @@ int main()
       
       usartPutString("Dobrodosli ");
       usartPutString(ime);
-      usartPutString("! \r\nUnesite PIN: ");
+      usartPutString("! \r\nUnesite 4 cifre PIN-a redom: ");
       
       while(1){
         
         while(!usartAvailable());
         _delay_ms(50);
 
-        usartGetString(pin);
+        usartGetString(digit);
+        
+        strcpy(pin,digit);
+        usartPutString("*");
+          
+        while(!usartAvailable());
+        _delay_ms(50);
+
+        usartGetString(digit);
+        
+        strcat(pin,digit);
+        usartPutString("*");
+        
+        while(!usartAvailable());
+        _delay_ms(50);
+
+        usartGetString(digit);
+        
+        strcat(pin,digit);
+        usartPutString("*");
+        
+        while(!usartAvailable());
+        _delay_ms(50);
+
+        usartGetString(digit);
+        
+        strcat(pin,digit);
+        usartPutString("*\r\n");
 
         if(!strcmp(pin,PINCODE[id])) break;
         
@@ -174,7 +202,6 @@ int main()
       }
       if (!attempt) continue;
       
-      usartPutString("****\r\n");
       usartPutString("Uspesno! Na racunu imate 100 evra! \r\n");
       usartPutString("Za novog korisnika upisite bilo sta. \r\n");
       
